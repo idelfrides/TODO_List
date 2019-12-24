@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Login {% endblock %}
+{% block title %}{{ super() }} - Login {% endblock %}
 
 {% block content %}
 <br><br><br>
-<div class="container mt-5 col-md-4 mx-auto">
-    <h1>Login</h1><br>
+<div class="shadow-lg p-5 rounded container mt-5 col-md-4 mx-auto">
+    <h1 class="text-dark">Login</h1><br>
     <form action="" method="POST">
         {{ myform.csrf_token }}
         <div class="form-group">
@@ -29,15 +29,12 @@
             </label>
         </div>  
 
-        <button type="submit" class="btn btn-primary px-5 w-50">Submit</button>
-    </form>
-    <div class="container">
-        <br><br><br><br>
-        <br><br><br><br>
-        <hr>
-        <br>
-    </div>
-   
+        <button type="submit" class="btn btn-primary px-5 w-100">Enter  </button>
+    </form>   
 </div>
+<br><br><br><br>
+<br><br><br><br>
+<div class="container mx-auto border border-bottom border-dark"></div>
+<br>
 
 {% endblock %}

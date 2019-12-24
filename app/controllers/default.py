@@ -1,30 +1,36 @@
-from flask import render_template, redirect, request
+from flask import flash, render_template, redirect, request
 from app import app, db
 from app.models.forms import LoginForm, RegisterForm
 from app.models.forms import TaskForm
 from app.models.tables import User, Task
 from app.controllers.manager import Manager
+from flask_login import login_user
 
 
+# ---------------------------------------
+#                 INDEX 
+#----------------------------------------
 @app.route('/home')
 @app.route('/index')
 @app.route("/")
 def index():
     return render_template('index.html')
 
-
-
+# ---------------------------------------
+#                 USER 
+#----------------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        print(form.username.data)
-        print(form.password.data)
-
         if not (form.password.data == form.confirm_pwd.data):
-            print('\n passwords do not match\n\n')
-            return render_template('register.html', myform=form)
+            flash('Passwords do not match')
+            '''
+            return render_template(
+                'register.html', 
+                myform=form
+            )'''
         
         new_user = User(
             username=form.username.data,
@@ -36,48 +42,68 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        flash('User created successfuly')
+
         return redirect('login')
+
        
     if not form.validate_on_submit():
         print(form.errors)
-
-    return render_template('register.html', myform=form)
-
-
+        return render_template(
+            'register.html', 
+            myform=form
+        )
+        
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
+  
     if form.validate_on_submit():
-        print(form.username.data)
-        print(form.password.data)
+        print('\n EU SOU LOGIN INVOCADO PELO FORMULARIO\n\n')
 
-        # CKECK IS EACH USER EXISTS
+        # print('\n user PASSED by form:  ', form.username.data)
+        # print('\n pwd PASSED by form:  ', form.password.data)
 
-        return redirect('task_registered')
+        user = User.query.filter_by(username=form.username.data).first()
+        print(user)
+        print('PWD PASSED: {} \n registered {} \n\n'
+            .format(form.password.data, user.password)
+        )
+
+        if user and(user.password == form.password.data):
+            flash('Logged in.')
+            # login_user(user)
+            return redirect('task_registered')
+        else:
+            flash('Invalid Login.') 
+            return redirect('login')
        
     if not form.validate_on_submit():
         print(form.errors)
-
-    return render_template('login.html', myform=form)
+        # flash('Data missing.') 
+        return render_template(
+            'login.html', 
+            myform=form
+        )
 
 
 @app.route('/user/create/<info>')
-@app.route('/user/create', methods=['GET'], 
+@app.route('/user/create', methods=['GET', 'POST'], 
     defaults={'info': None}
 )
 def create_user(info):
     usr = User(
-        username='cafe',
+        username='idel',
         password='14657',
-        name='escolastica',
-        email='cafe@teste.com'
+        name='idelfrides',
+        email='idel@teste.com'
     )
     db.session.add(usr)
     db.session.commit()
-    return 'OK'
     
+    flash('User created successfuly')
+
 
 @app.route('/read/<id>')
 @app.route('/read', methods=['GET'], 
@@ -130,7 +156,6 @@ def create_task():
     db.session.commit()
     return 'OK'
 
-
 @app.route('/task_insert', methods=['GET', 'POST'])
 def task_insert_all():
     print('\n\n EU SOU TASK INSERT \n\n')
@@ -152,7 +177,6 @@ def task_insert_all():
         print('\n\n TASK INSERED SUCCESSFULLY\n')
 
         return redirect('task_doing')
- 
 
 @app.route('/task/read/<id>')
 @app.route('/task/read', methods=['GET'], 
@@ -168,7 +192,6 @@ def read_task(id):
     print(task)
     return 'OK'
 
-
 @app.route('/task/update/<id>')
 @app.route('/task/update', methods=['GET', 'POST'],
     defaults={"id":None}
@@ -177,6 +200,7 @@ def update_task(id):
     if id:
         task2update = Task.query.get(id)
         task2update.done_status = True
+        db.session.add(task2update)
         db.session.commit()
 
         task_form = TaskForm()
@@ -187,7 +211,6 @@ def update_task(id):
         task=task, 
         task_form=task_form
     )
-
 
 @app.route('/task_dalete/<id>')
 @app.route('/delete_task', methods=['GET'],
@@ -217,7 +240,6 @@ def task_dalete(id):
         task=task, 
         task_form=task_form
     )
-
 
 @app.route('/task_registered', methods=['GET', 'POST'])
 def task_registered():
@@ -252,7 +274,6 @@ def task_registered():
 
     return render_template('manage_task.html', task=task, task_form=task_form)
 
-
 @app.route('/task_doing', methods=['GET', 'POST'])
 def task_doing():
     if request.method == "POST":
@@ -279,15 +300,19 @@ def task_doing():
         task=task, 
         task_form=task_form
     )
-    
-
 
 @app.route('/task_done')
 def task_done():
     task_form = TaskForm()
     task = Task.query.all()
 
-    return render_template('task_done.html', task=task, task_form=task_form)
+    return render_template(
+        'task_done.html', 
+        task=task, 
+        task_form=task_form
+    )
+
+
 
 
 
