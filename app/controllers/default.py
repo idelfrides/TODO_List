@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request
 from app import app, db
-from app.models.forms import LoginForm
+from app.models.forms import LoginForm, RegisterForm
 from app.models.forms import TaskForm
 from app.models.tables import User, Task
 from app.controllers.manager import Manager
@@ -11,6 +11,38 @@ from app.controllers.manager import Manager
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        print(form.username.data)
+        print(form.password.data)
+
+        if not (form.password.data == form.confirm_pwd.data):
+            print('\n passwords do not match\n\n')
+            return render_template('register.html', myform=form)
+        
+        new_user = User(
+            username=form.username.data,
+            password=form.password.data,
+            name=form.name.data,
+            email=form.email.data
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect('login')
+       
+    if not form.validate_on_submit():
+        print(form.errors)
+
+    return render_template('register.html', myform=form)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

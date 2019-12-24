@@ -38,3 +38,8 @@ a#active2{
 }
 */
 
+div#main-content{
+    position: relative;
+    margin-left: 60%;
+}
+

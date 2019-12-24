@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Login {% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="container mt-5 col-md-4 mx-auto">
+    <h1>Register</h1><br>
+    <form action="" method="POST">
+        {{ myform.csrf_token }}
+        <div class="form-group">
+            <label>Username</label>
+            {{ myform.username(class="form-control", type="text" placeholder="Enter your username") }}
+            {% if myform.errors.username %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ myform.errors.username }}
+                </div>
+            {% endif %}            
+        </div>
+        <div class="form-group">
+            <label>Full Name</label>
+            {{ myform.name(class="form-control", type="text" placeholder="Enter your name") }}
+            {% if myform.errors.name %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ myform.errors.username }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            {{ myform.email(class="form-control", type="email" placeholder="Enter your email") }}
+            {% if myform.errors.email %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ myform.errors.email }}
+                </div>
+            {% endif %}            
+        </div>
+        <div class="from-group">
+            <label>Password</label>
+            {{ myform.password(class="form-control", placeholder="Enter your password")}}
+        </div>
+        <div class="from-group">
+            <label>Confirm Password</label>
+            {{ myform.confirm_pwd(class="form-control", placeholder="Confirm your password")}}
+        </div>
+
+        <button type="submit" class="btn btn-primary px-5 w-50">Register</button>
+    </form>
+    <div class="container w-50 mx-auto">
+        <br><br><br><br>
+        <br><br><br><br>
+        <hr>
+        <br>
+    </div>
+   
+</div>
+
+{% endblock %}

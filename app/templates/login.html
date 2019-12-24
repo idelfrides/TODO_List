@@ -4,7 +4,7 @@
 
 {% block content %}
 <br><br><br>
-<div class="mt-5 col-md-4 mx-auto">
+<div class="container mt-5 col-md-4 mx-auto">
     <h1>Login</h1><br>
     <form action="" method="POST">
         {{ myform.csrf_token }}
@@ -31,6 +31,13 @@
 
         <button type="submit" class="btn btn-primary px-5 w-50">Submit</button>
     </form>
+    <div class="container">
+        <br><br><br><br>
+        <br><br><br><br>
+        <hr>
+        <br>
+    </div>
+   
 </div>
 
 {% endblock %}
