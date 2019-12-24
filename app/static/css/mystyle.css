@@ -1,0 +1,40 @@
+div#btn-add{
+    position: relative;
+    float: right;
+    margin: 20px auto;
+}
+
+a#active1{
+    background-color: darkgrey;
+    color: #ffffff;
+    
+}
+
+a#active2{
+    background-color: darkgrey;
+    color: #ffffff;
+}
+
+#active3{
+    background-color: rgb(117, 23, 23);
+    color: #ffffff;
+}
+
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 0.8rem;
+}
+
+/*
+#radioform{
+    float: right;
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    cursor: pointer;
+    display: none;
+}
+*/
+
