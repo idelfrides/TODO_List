@@ -26,27 +26,22 @@ def register():
     if form.validate_on_submit():
         if not (form.password.data == form.confirm_pwd.data):
             flash('Passwords do not match')
-            '''
             return render_template(
                 'register.html', 
                 myform=form
-            )'''
-        
+            )        
         new_user = User(
             username=form.username.data,
             password=form.password.data,
             name=form.name.data,
             email=form.email.data
         )
-
         db.session.add(new_user)
         db.session.commit()
-
         flash('User created successfuly')
 
         return redirect('login')
 
-       
     if not form.validate_on_submit():
         print(form.errors)
         return render_template(
@@ -66,19 +61,24 @@ def login():
         # print('\n pwd PASSED by form:  ', form.password.data)
 
         user = User.query.filter_by(username=form.username.data).first()
-        print(user)
-        print('PWD PASSED: {} \n registered {} \n\n'
-            .format(form.password.data, user.password)
-        )
+        # print(user)
+        # print('PWD PASSED: {} \n registered {} \n\n'
+          #  .format(form.password.data, user.password)
+        # )
+        
+        if not user:
+            flash('Invalid Login. Wrong username') 
+            return redirect('login')
 
-        if user and(user.password == form.password.data):
+        if user.password != form.password.data:
+            flash('Invalid Login. Wrong password.') 
+            return redirect('login')
+       
+        if user.password == form.password.data:
             flash('Logged in.')
             # login_user(user)
             return redirect('task_registered')
-        else:
-            flash('Invalid Login.') 
-            return redirect('login')
-       
+
     if not form.validate_on_submit():
         print(form.errors)
         # flash('Data missing.') 
