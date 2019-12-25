@@ -9,14 +9,13 @@
     <div class="shadow-lg container bg-dark text-white py-5">
         <div class="container ml-4">
            <h1 class="display-4 font-weight-bolder text-capitalize">Welcome to todo list!</h1>
-           <p>Manage your task here. Make a CRUD as you want.</p>
+           <p>Manage your tasks here. Make a CRUD as you want.</p>
         </div>
     </div>
 
     <div class="shadow-lg container  w-100 row mx-auto rounded">
         <div class="shadow-lg w-25 row border border-secondary py-5 mb-auto ml-0 bg-white rounded">
             <div class="list-group rounded mx-auto my-auto">
-                <!-- <a class="shadow list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_registered') }}">tarefas registradas</a>  -->
                 <a id="active_doing" class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-4 rounded" href="{{ url_for('task_doing') }}">tarefas em execução</a>  
                 <a class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded"  href="{{ url_for('task_done') }}">tarefas concluídas</a>
             </div>
@@ -30,16 +29,15 @@
                 </button>
             </div>
             <div id="all-task" class=" row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
-                <h2 class="display-7 text-white text-capitalize font-weight-bolder p-3">Tarefas em execução</h2> 
+                <h2 class="display-7 text-white text-capitalize font-weight-bolder mb-3 p-3">Tarefas em execução</h2> 
                 {% for t in task[::-1] %}
                     {% if t.done_status == False and t.deadline != None %}
                         <div class="ml-4 text-white text-capitalize w-100 border-bottom mb-4">
-                            <a class="text-decoration-none text-white" href="#" data-toggle="modal" data-target="#updateTaskModal"><h5><strong>{{ t.task_name }}</strong></h5></a>
-                          
+                            <a id="taskTitle" class="text-decoration-none text-white" href="#" data-toggle="modal" data-target="#updateTaskModal"><h5><strong>{{ t.task_name }}</strong></h5></a>  
                             <p class="d-inline">Deadline: &nbsp; {{ t.deadline }}
-                              <form name="formRadio" class="d-inline ml-5" method="POST" onclick="onclick_task_done()">
+                              <form name="formRadio" class="d-inline ml-5" method="POST">
                                   <label class="form-check-label ml-5">
-                                     <input type="radio" class="form-check-input" name="inputRadio" >Done
+                                     <input type="radio" class="form-check-input" href="" name="inputRadio" onclick="onclick_task_done()">Done
                                   </label>
                                   <input type="hidden" name="optHidden" value="done">
                                   <input type="hidden" name="optDoneId" value="{{ t.id }}">
@@ -57,9 +55,9 @@
             </div>
         </div>
 
-        <!-- Modal area -->
+        <!-- Global Modal Area -->
         <div class="container">
-            <!-- New Modal -->
+            <!-- New Task Modal -->
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
@@ -124,7 +122,6 @@
                     </div>
 
                      <!-- Modal body -->
-                
                         <div class="modal-body">
                           <form method="POST" class="was-validated"> 
                               <div class="form-row text-capitalize">

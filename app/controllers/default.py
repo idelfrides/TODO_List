@@ -50,7 +50,7 @@ def register():
             'register.html', 
             myform=form
         )
-        
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,15 +68,19 @@ def login():
             return redirect('login')
        
         if user.password == form.password.data:
+            print('\n\n DEU CERTO \n\n')
+            print('USER {} \n PWD {} \n\n'
+                .format(user.username, user.password)
+            )
             flash('Logged in.')
             # login_user(user)
             return redirect('task_doing')
-    else:        
+    
+    if not form.validate_on_submit():       
         return render_template(
             'login.html', 
             myform=form
         )
-
 
 # ---------------------------------------
 #              TASK METHODS
