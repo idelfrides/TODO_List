@@ -7,7 +7,9 @@
 <div class="shadow-lg p-5 rounded container mt-5 col-md-4 mx-auto">
     <h1 class="text-dark">Login</h1><br>
     <form action="" method="POST">
+
         {{ myform.csrf_token }}
+        
         <div class="form-group">
             <label>Username</label>
             {{ myform.username(class="form-control", placeholder="Enter your username") }}
@@ -16,13 +18,14 @@
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     {{ myform.errors.username }}
                 </div>
-            {% endif %}
-            
+            {% endif %}            
         </div>
+
         <div class="from-group">
             <label>Password</label>
             {{ myform.password(class="form-control", placeholder="Enter your password")}}
         </div>
+
         <div class="form-check my-4 ml-0">
             <label class="form-check-label">
                 {{ myform.remember_me }} Remember me

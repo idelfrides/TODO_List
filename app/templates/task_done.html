@@ -4,40 +4,52 @@
 
 
 {% block content %}
-<main role="main" class="bg-dark">
+<main role="main" class="shadow-lg bg-dark rounded">
     <!-- Main Container -->
-    <div class="container bg-dark text-white py-5 border  shadow border-secondary">
-        <div class="container">
+    <div class="shadow-lg container bg-dark text-white py-5 rounded">
+        <div class="container ml-4">
            <h1 class="display-4 font-weight-bolder text-capitalize">Welcome to todo list!</h1>
            <p>Manage your task here. Make a CRUD as you want.</p>
         </div>
     </div>
 
-    <div class="container border border-secondary w-100 row mx-auto">
-        <div class="w-25 row border border-secondary py-5 mb-auto ml-0 bg-white">
-        
-            <div class="list-group">
-                <a class="shadow list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_registered') }}">tarefas registradas</a>  
-                <a class="shadow list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_doing') }}">tarefas agendas</a>  
-                <a id="active3" class="shadow list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded"  href="{{ url_for('task_done') }}">tarefas concluídas</a>
+    <div class="shadow-lg container w-100 row mx-auto rounded">
+        <div class="shadow-lg w-25 row border border-secondary py-5 mb-auto ml-0 bg-white rounded">
+            <div class="list-group rounded mx-auto my-auto">
+                <!-- <a class="shadow list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_registered') }}">tarefas registradas</a>  -->
+                <a class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-4 rounded" href="{{ url_for('task_doing') }}">tarefas em execução</a>  
+                <a id="active_done" class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_done') }}">tarefas concluídas</a>
             </div>
-
         </div>
 
         <!-- Tasks area -->
         <div class="w-75 mx-auto">
             <div id="btn-add" class="text-white font-weight-bold">
-                <button  type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">
                     &plus; Add new task
                 </button>
             </div>
-            <div id="active" class="row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
+            <div id="all-task" class=" row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
                 <h2 class="display-7 text-white text-capitalize font-weight-bolder p-3">Tarefas concluídas</h2> 
-                {% for t in task %}
+                {% for t in task[::-1] %}
                     {% if t.done_status == True %}
                         <div class="ml-4 text-white text-capitalize w-100 border-bottom mb-4">
                             <a class="text-decoration-none text-white" href="#"><h5><strong>{{ t.task_name }}</strong></h5></a>
-                            <p>Deadline: &nbsp; {{ t.deadline }}</p>
+                            <p class="d-inline">Deadline: &nbsp; {{ t.deadline }}
+                              <form class="d-inline ml-5" method="POST" onclick="{{ url_for('task_doing') }}">
+                                  <label class="form-check-label">
+                                     <input type="radio" class="form-check-input" name="inputRadio" checked>Done
+                                  </label>
+                                  <input type="hidden" name="optHidden" value="done">
+                                  <input type="hidden" name="optDoneId" value="{{ t.id }}">
+                              </form> 
+
+                              <form method="POST" class="d-inline ml-5" >
+                                <input type="hidden" name="optHidden" value="remove">
+                                <input type="hidden" name="optRemoveId" value="{{ t.id }}">
+                                <button type="submit" class="btn btn-dark">Remove</button>
+                              </form> 
+                            </p>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -57,27 +69,35 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>
 
-                      <!-- Modal body -->
+                       <!-- Modal body -->
                       <div class="modal-body">
-                        <form method="POST"> 
-                            <div class="form-row">
+                        <form method="POST" class="was-validated"> 
+                            <div class="form-row text-capitalize">
 
                               <div class="form-group col-md-12">
-                                <label for="inputTaskname4">Task Name/Titel</label>
-                                <input type="text" name="taskTitleName"class="form-control" id="inputTaskname4" placeholder="Task title">
+                                <label for="inputTaskname4">Task Name/Title</label>
+                                <input type="text" name="taskTitleName"class="form-control" id="inputTaskname4" placeholder="Task title" required>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
                               </div>
-
+                           
                               <div class="form-group shadow-textarea col-md-12">
-                                <label for="description4">Description</label>
-                                <textarea class="form-control z-depth-1" name="descripName" id="description4" rows="3"  placeholder="Enter task description..."></textarea>
-                              </div>   
+                                  <label for="description4">Description</label>
+                                  <textarea class="form-control z-depth-1" name="descripName" id="description4" rows="3"  placeholder="Enter task description..." required></textarea>
+                                  <div class="valid-feedback">Valid.</div>
+                                  <div class="invalid-feedback">Please fill out this field.</div>
+                              </div>
 
                               <div class="form-group col-md-12">
                                 <label for="inputDeadline4">Deadline</label>
-                                <input type="date" name="deadlineName" min="2019-12-01" max="4000-12-30" class="form-control" id="inputDeadline4">
+                                <input type="date" name="deadlineName" min="2019-12-01" max="4000-12-30" class="form-control" id="inputDeadline4" required>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
                               </div>
                             </div>
                             
+                            <input type="hidden" name="optHidden" value="add">
+                        
                             <button type="submit" class="btn w-50 btn-primary">Send</button>
                         </form>
                       </div>
@@ -86,12 +106,13 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                       </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
+        <br><br><br>
     </div> <!-- /container -->
+    <br><br><br>
+    <br><br><br>
 </main>
 {% endblock %}

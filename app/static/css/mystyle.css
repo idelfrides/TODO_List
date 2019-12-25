@@ -4,39 +4,16 @@ div#btn-add{
     margin: 20px auto;
 }
 
-a#active1{
-    background-color: darkgrey;
-    color: #ffffff;
-    
-}
 
-a#active2{
+a#active_doing{
     background-color: darkgrey;
     color: #ffffff;
 }
 
-#active3{
+#active_done{
     background-color: darkgrey;
     color: #ffffff;
 }
-
-.shadow-textarea textarea.form-control::placeholder {
-    font-weight: 300;
-}
-.shadow-textarea textarea.form-control {
-    padding-left: 0.8rem;
-}
-
-/*
-#radioform{
-    float: right;
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    cursor: pointer;
-    display: none;
-}
-*/
 
 div#main-content{
     position: relative;
