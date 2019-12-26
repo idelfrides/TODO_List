@@ -5,12 +5,12 @@ div#btn-add{
 }
 
 a#active_doing{
-    background-color: rgb(240, 240, 240, 0.5);
+    background-color: LightGray;
     color: #ffffff;
 }
 
-#active_done{
-    background-color: rgb(240, 240, 240, 0.5);;
+a#active_done{
+    background-color: LightGray;
     color: #ffffff;
 }
 

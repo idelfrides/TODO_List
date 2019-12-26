@@ -43,7 +43,6 @@ class User(db.Model):
         return '<User %r>' % self.username
     
 
-
 class Task(db.Model):
     """ Task model """
 
@@ -51,7 +50,7 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    task_name = db.Column(db.String)
+    task_name = db.Column(db.String, unique=True)
 
     description = db.Column(db.Text)
 
@@ -69,12 +68,13 @@ class Task(db.Model):
     
     task_owner = db.relationship('User', foreign_keys=user_id)
 
-    def __init__(self, task_name, description, start_date, done_status, deadline):
+    def __init__(self, task_name, description, start_date, done_status, deadline, user_id):
         self.task_name = task_name
         self.description = description  
         self.start_date = start_date
         self.done_status = done_status
         self.deadline = deadline
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Task %r>' % self.id

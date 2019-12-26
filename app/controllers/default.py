@@ -5,7 +5,8 @@ from app.models.forms import LoginForm, RegisterForm
 from app.models.forms import TaskForm
 from app.models.tables import User, Task
 from app.controllers.manager import Manager
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user 
+from flask_login import login_required, current_user
 
 
 @login_manager.user_loader
@@ -24,7 +25,7 @@ def index():
 
 
 # ---------------------------------------
-#              METHODS FOR USER 
+#             METHODS FOR USER 
 #----------------------------------------
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -72,18 +73,18 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         
         if not user:
-            flash('Invalid Login. Wrong username') 
+            flash(u'Invalid Login. Wrong username', 'danger') 
             return redirect('login')
 
         if user.password != form.password.data:
-            flash('Invalid Login. Wrong password.') 
+            flash(u'Invalid Login. Wrong password.', 'danger') 
             return redirect(url_for('login'))
        
         if user.password == form.password.data:
-            flash('Logged in.')
             login_user(user)
+            flash(u'Logged in.', 'success')
             return redirect(url_for('task_doing'))
-    else:        
+    else:
         return render_template(
             'login.html', 
             myform=form
@@ -94,26 +95,35 @@ def login():
 #----------------------------------------
 
 @app.route('/task_insert', methods=['GET', 'POST'])
+@login_required
 def task_insert(): 
-     
-    date_add = Manager().numeric_date_recover()
+    
+    all_task = Task.query.all()
 
+    for t in all_task:
+        if t.task_name == request.form['taskTitleName']:
+            flash(u'This task name already exists!','warning')
+            return redirect(url_for('task_doing'))
+
+    date_add = Manager().numeric_date_recover()
     new_task = Task(
         task_name=request.form['taskTitleName'],
         description=request.form['descripName'],
         start_date=date_add,
         deadline=request.form['deadlineName'],
-        done_status=False
+        done_status=False,
+        user_id=current_user.id
     )
 
     db.session.add(new_task)
     db.session.commit()
 
-    flash('Task created successfuly')
+    flash('Task created successfuly', 'success')
     return redirect(url_for('task_doing'))
 
 
 @app.route('/task_pre_update/<int:task_id>', methods=['GET', 'POST'])
+@login_required
 def task_pre_update(task_id):
        
     tasks = Task.query.all()
@@ -126,6 +136,7 @@ def task_pre_update(task_id):
 
 
 @app.route('/task_update/<int:task_id>', methods=['GET', 'POST'])
+@login_required
 def task_update(task_id):
     task_form = TaskForm()   
 
@@ -143,7 +154,7 @@ def task_update(task_id):
         db.session.add(task2update)
         db.session.commit()
 
-        flash('Task updated successfuly')
+        flash('Task updated successfuly', 'success')
         
         tasks = Task.query.all()
         return render_template(
@@ -161,6 +172,7 @@ def task_update(task_id):
 
 
 @app.route('/task_delete', methods=['GET', 'POST'])
+@login_required
 def task_delete():
     task_form = TaskForm()
     tasks = Task.query.all()
@@ -174,7 +186,7 @@ def task_delete():
             db.session.delete(task2delete)
             db.session.commit()
 
-            flash('Task deleted successfuly')
+            flash('Task deleted successfuly', 'success')
 
             tasks = Task.query.all()
             return render_template(
@@ -191,6 +203,7 @@ def task_delete():
 
 
 @app.route('/task_doing', methods=['GET', 'POST'])
+@login_required
 def task_doing():
 
     task_form = TaskForm()   
@@ -204,6 +217,7 @@ def task_doing():
 
 
 @app.route('/task_done', methods=['GET', 'POST'])
+@login_required
 def task_done():
     
     task_form = TaskForm()
@@ -219,7 +233,7 @@ def task_done():
             db.session.add(task_done)
             db.session.commit()
 
-            flash('Task done successfuly')
+            flash('Task done successfuly', 'success')
             return render_template(
                 'task_done.html', 
                 tasks=tasks, 
@@ -233,6 +247,7 @@ def task_done():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))

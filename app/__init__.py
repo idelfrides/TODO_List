@@ -16,6 +16,5 @@ manager.add_command('db', MigrateCommand)
 
 login_manager = LoginManager(app)
 
-
 from app.models import tables, forms
 from app.controllers import default
