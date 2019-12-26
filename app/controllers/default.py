@@ -1,10 +1,16 @@
-from flask import flash, render_template, redirect, request
-from app import app, db
+from flask import flash, render_template
+from flask import redirect, request, url_for
+from app import app, db, login_manager
 from app.models.forms import LoginForm, RegisterForm
 from app.models.forms import TaskForm
 from app.models.tables import User, Task
 from app.controllers.manager import Manager
-from flask_login import login_user
+from flask_login import login_user, logout_user
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.filter_by(id=id).first()
 
 
 # ---------------------------------------
@@ -44,7 +50,7 @@ def register():
             db.session.commit()
             flash('User created successfuly')
 
-            return redirect('login')
+            return redirect(url_for('login'))
         if not form.validate_on_submit():
             print(form.errors)
             return render_template(
@@ -57,7 +63,7 @@ def register():
             myform=form
         )
         
-
+   
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -71,14 +77,13 @@ def login():
 
         if user.password != form.password.data:
             flash('Invalid Login. Wrong password.') 
-            return redirect('login')
+            return redirect(url_for('login'))
        
         if user.password == form.password.data:
             flash('Logged in.')
-            # login_user(user)
-            return redirect('task_doing')
-    
-    if not form.validate_on_submit():       
+            login_user(user)
+            return redirect(url_for('task_doing'))
+    else:        
         return render_template(
             'login.html', 
             myform=form
@@ -105,7 +110,7 @@ def task_insert():
     db.session.commit()
 
     flash('Task created successfuly')
-    return redirect('task_doing')
+    return redirect(url_for('task_doing'))
 
 
 @app.route('/task_pre_update/<int:task_id>', methods=['GET', 'POST'])
@@ -227,6 +232,10 @@ def task_done():
     )
 
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 

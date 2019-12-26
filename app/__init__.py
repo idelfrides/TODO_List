@@ -16,9 +16,6 @@ manager.add_command('db', MigrateCommand)
 
 login_manager = LoginManager(app)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return None
 
 from app.models import tables, forms
 from app.controllers import default

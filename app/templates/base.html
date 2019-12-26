@@ -38,8 +38,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{{ url_for('index') }}">sensedata</a>
+    <nav class="py-4 navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class=" ml-5 navbar-brand" href="{{ url_for('index') }}">sensedata</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -56,12 +56,14 @@
               <a class="nav-link" href="#">vagas</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          
+          <a href="{{ url_for('login') }}">
+            <button class="btn btn-outline-primary px-3 mr-5 my-2 my-sm-0">
+              Login
+            </button>
+          </a>
         </div>
-    </nav>
+    </nav><br>
    
     {% with messages = get_flashed_messages() %}
       {% if messages %}

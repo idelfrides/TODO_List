@@ -41,9 +41,20 @@
 </head>
 
 <body class="my-0 mx-auto py-0 bg-dark">
-    <nav class="navbar navbar-expand-md fixed-top bg-danger ">
-        <a class="navbar-brand w-75 mx-auto text-decoration-none text-white font-weight-bolder " href="#">TODO List</a>
-    </nav><br><br>
+  <nav class="navbar navbar-expand-md fixed-top bg-danger ">
+    <div class="container mx-auto py-3">  
+      <a class="navbar-brand w-75 mx-auto text-decoration-none text-white font-weight-bolder " href="#">TODO List</a>
+        {% if current_user.is_authenticated %}
+          <p class="text-white">{{ current_user.username }} &nbsp;&nbsp;| &nbsp;&nbsp;
+            <a href="{{ url_for('logout') }}">
+              <button class="btn btn-outline-light px-3 mr-5 my-2 my-sm-0">
+                Logout
+              </button>
+            </a>  
+          </p>
+        {% endif %}
+    </div>
+  </nav><br><br><br><br>
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}

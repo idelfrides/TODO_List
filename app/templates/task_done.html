@@ -31,7 +31,7 @@
                             <a  title="Click to update this task" class="text-decoration-none text-white" href="{{ url_for('task_pre_update', task_id=t.id) }}">
                                 <h5><strong>{{ t.task_name }}</strong></h5>
                             </a>
-                            <p class="d-inline">Deadline: &nbsp;&nbsp; <strong>Done</strong>
+                            <p class="d-inline">Deadline: &nbsp;&nbsp; <strong>None</strong>
                               <form class="d-inline ml-5" method="POST" action="{{ url_for('task_done') }}">
                                   <label class="form-check-label">
                                      <input type="radio" class="form-check-input" name="inputRadio" checked>Done
