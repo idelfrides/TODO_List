@@ -30,25 +30,27 @@
             </div>
             <div id="all-task" class=" row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
                 <h2 class="display-7 text-white text-capitalize font-weight-bolder mb-3 p-3">Tarefas em execução</h2> 
-                {% for t in task[::-1] %}
+                {% for t in tasks[::-1] %}
                     {% if t.done_status == False and t.deadline != None %}
                         <div class="ml-4 text-white text-capitalize w-100 border-bottom mb-4">
-                            <a id="taskTitle" class="text-decoration-none text-white" href="#" data-toggle="modal" data-target="#updateTaskModal"><h5><strong>{{ t.task_name }}</strong></h5></a>  
+                            <a title="Click to update this task" class="text-decoration-none text-white" href="{{ url_for('task_pre_update', task_id=t.id) }}">
+                                <h5><strong>{{ t.task_name }}</strong></h5>
+                            </a>  
+
                             <p class="d-inline">Deadline: &nbsp; {{ t.deadline }}
-                              <form name="formRadio" class="d-inline ml-5" method="POST">
-                                  <label class="form-check-label ml-5">
-                                     <input type="radio" class="form-check-input" href="" name="inputRadio" onclick="onclick_task_done()">Done
-                                  </label>
-                                  <input type="hidden" name="optHidden" value="done">
-                                  <input type="hidden" name="optDoneId" value="{{ t.id }}">
+                              <form method="POST" action="{{ url_for('task_done') }}" class="d-inline ml-5" >
+                                <input type="hidden" name="optHidden" value="done">
+                                <input type="hidden" name="optDoneId" value="{{ t.id }}">                                 
+                                <button type="submit" class="btn btn-dark">Done</button>
                               </form> 
 
-                              <form method="POST" class="d-inline ml-5" >
+                              <form method="POST" action="{{ url_for('task_delete') }}" class="d-inline ml-5" >
                                 <input type="hidden" name="optHidden" value="remove">
                                 <input type="hidden" name="optRemoveId" value="{{ t.id }}">
                                 <button type="submit" class="btn btn-dark">Remove</button>
                               </form> 
                             </p>
+                            
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -70,7 +72,7 @@
 
                        <!-- Modal body -->
                       <div class="modal-body">
-                        <form method="POST" class="was-validated"> 
+                        <form method="POST" class="was-validated" action="{{ url_for('task_insert') }}"> 
                             <div class="form-row text-capitalize">
 
                               <div class="form-group col-md-12">
@@ -109,59 +111,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Update Task Modal-->
-            <div class="modal fade" id="updateTaskModal">
-              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">Update Task</h4>
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                     <!-- Modal body -->
-                        <div class="modal-body">
-                          <form method="POST" class="was-validated"> 
-                              <div class="form-row text-capitalize">
-
-                                <div class="form-group col-md-12">
-                                  <label for="inputTaskname4">Task Name/Title</label>
-                                  <input value="" type="text" name="taskTitleName"class="form-control" id="inputTaskname4" placeholder="Task title" required>
-                                  <div class="valid-feedback">Valid.</div>
-                                  <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-                            
-                                <div class="form-group shadow-textarea col-md-12">
-                                    <label for="description4">Description</label>
-                                    <textarea value="" class="form-control z-depth-1" name="descripName" id="description4" rows="3"  placeholder="Enter task description..." required></textarea>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-
-                                <div class="form-group col-md-12">
-                                  <label for="inputDeadline4">Deadline</label>
-                                  <input value="" type="date" name="deadlineName" min="2019-12-01" max="4000-12-30" class="form-control" id="inputDeadline4" required>
-                                  <div class="valid-feedback">Valid.</div>
-                                  <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-                              </div>
-                     
-                              <input type="hidden" name="optHidden" value="add">
-                      
-                          <button type="submit" class="btn w-50 btn-primary">Update</button>
-                      </form>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </div>
-
-                  </div>
-              </div>
-          </div>
         </div>
         <br><br><br>
     </div> <!-- /container -->

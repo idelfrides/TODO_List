@@ -1,4 +1,10 @@
 
-function onclick_task_done() {
-    window.location.href = "http://127.0.0.1:5000/task_done";
-}
+/*
+$(document).ready(function () {
+    $('#updateTaskModal1').modal('show');
+});
+*/
+/*
+$(window).load(function (){
+    $('#updateTaskModal1').modal('show');
+}); */

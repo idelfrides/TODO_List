@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>TODO List - Task Update</title>
+
+    <!-- Bootstrap core CSS -->
+    <link 
+        href="{{ url_for('static', filename='css/bootstrap.min.css') }}" 
+        rel="stylesheet" 
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+        crossorigin="anonymous">
+
+    <link href="{{ url_for('static', filename='css/mystyle.css') }}" 
+        rel="stylesheet" >
+    
+    <script src="{{ url_for('static', filename='js/mystyle.js') }}" type="text/javascript"></script> 
+    
+    <meta name="theme-color" content="#563d7c">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px){
+        .bd-placeholder-img-lg{
+          font-size: 3.5rem;
+        }
+      }
+    </style> 
+</head>
+
+<body class="my-0 mx-auto py-0 bg-dark">
+    <nav class="navbar navbar-expand-md fixed-top bg-danger ">
+        <a class="navbar-brand w-75 mx-auto text-decoration-none text-white font-weight-bolder " href="#">TODO List</a>
+    </nav><br><br>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          <div class="alert alert-success alert-dismissible w-75 mt-4 mx-auto ">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <ul class=flashes>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+    {% endwith %}
+
+
+<main role="main" class="shadow-lg bg-dark rounded">
+    <!-- Main Container -->
+    <div class="shadow-lg container bg-dark text-white py-5">
+        <div class="container ml-4">
+           <h1 class="display-4 font-weight-bolder text-capitalize">Welcome to todo list!</h1>
+           <p>Manage your tasks here. Make a CRUD as you want.</p>
+        </div>
+    </div>
+
+    <div class="shadow-lg container  w-100 row mx-auto rounded">
+      <div class="shadow-lg w-25 row border border-secondary py-5 mb-auto ml-0 bg-white rounded">
+        <div class="list-group rounded mx-auto my-auto">
+            <a id="active_doing" class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-4 rounded" href="{{ url_for('task_doing') }}">tarefas em execução</a>  
+            <a class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded"  href="{{ url_for('task_done') }}">tarefas concluídas</a>
+        </div>
+    </div>
+
+    <!-- Tasks area -->
+    <div class="w-75 mx-auto">
+        <div id="btn-add" class="text-white font-weight-bold">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">
+                &plus; Add new task
+            </button>
+        </div>
+        <div id="all-task" class=" row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
+            <h2 class="display-7 text-white text-capitalize font-weight-bolder mb-3 p-3">Tarefas em execução</h2> 
+            {% for t in tasks[::-1] %}
+                {% if t.done_status == False and t.deadline != None %}
+                    <div class="ml-4 text-white text-capitalize w-100 border-bottom mb-4">
+        
+                        <a title="Click to update this task" class="text-decoration-none text-white" href="{{ url_for('task_pre_update', task_id=t.id) }}">
+                            <h5><strong>{{ t.task_name }}</strong></h5>
+                        </a>  
+
+                        <p class="d-inline">Deadline: &nbsp; {{ t.deadline }}
+                          <form method="POST" action="{{ url_for('task_done') }}" class="d-inline ml-5" >
+                            <input type="hidden" name="optHidden" value="done">
+                            <input type="hidden" name="optDoneId" value="{{ t.id }}">                                 
+                            <button type="submit" class="btn btn-dark">Done</button>
+                          </form> 
+
+                          <form method="POST" name="taskRemove" class="d-inline ml-5" >
+                            <input type="hidden" name="optHidden" value="remove">
+                            <input type="hidden" name="optRemoveId" value="{{ t.id }}">
+                            <button type="submit" class="btn btn-dark">Remove</button>
+                          </form> 
+                        </p>
+                        
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+        <!-- Global Modal Area -->
+        <div class="container">
+
+           <!-- New Task Modal -->
+           <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Add new Task</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                   <!-- Modal body -->
+                  <div class="modal-body">
+                    <form method="POST" class="was-validated"> 
+                        <div class="form-row text-capitalize">
+
+                          <div class="form-group col-md-12">
+                            <label for="inputTaskname4">Task Name/Title</label>
+                            <input type="text" name="taskTitleName"class="form-control" id="inputTaskname4" placeholder="Task title" required>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please fill out this field.</div>
+                          </div>
+                       
+                          <div class="form-group shadow-textarea col-md-12">
+                              <label for="description4">Description</label>
+                              <textarea class="form-control z-depth-1" name="descripName" id="description4" rows="3"  placeholder="Enter task description..." required></textarea>
+                              <div class="valid-feedback">Valid.</div>
+                              <div class="invalid-feedback">Please fill out this field.</div>
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label for="inputDeadline4">Deadline</label>
+                            <input type="date" name="deadlineName" min="2019-12-01" max="4000-12-30" class="form-control" id="inputDeadline4" required>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please fill out this field.</div>
+                          </div>
+                        </div>
+                        
+                        <input type="hidden" name="optHidden" value="add">
+                    
+                        <button type="submit" class="btn w-50 btn-primary">Send</button>
+                    </form>
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+
+            
+            <!-- Update Task Modal-->
+            <div class="modal fade" id="updateTaskModal1">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Update Task</h4>
+                      <button type="button" class="close" data-dismiss="modal" disabled>&times;</button>
+                    </div>
+
+                      <!-- Modal body -->
+                        <div class="modal-body">
+       
+                          <form method="POST"  action="{{ url_for('task_update', task_id=t2u.id) }}" class="was-validated"> 
+                   
+                              <div class="form-row text-capitalize">
+
+                                <div class="form-group col-md-12">
+                                  <label for="inputTaskname4">Task Name/Title</label>
+                                  <input value="{{ t2u.task_name }}" type="text" name="taskTitleName"class="form-control" id="inputTaskname4" placeholder="Task title" required>
+                                  <div class="valid-feedback">Valid.</div>
+                                  <div class="invalid-feedback">Please fill out this field.</div>
+                                </div>
+                            
+                                <div class="form-group shadow-textarea col-md-12">
+                                    <label for="description4">Description</label>
+                                    <textarea class="form-control z-depth-1" name="descripName" id="description4" rows="3"  placeholder="Enter task description..." required>
+                                      {{ t2u.description }}
+                                    </textarea>
+                                    <div class="valid-feedback">Valid.</div>
+                                    <div class="invalid-feedback">Please fill out this field.</div>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                  <label for="inputDeadline4">Deadline</label>
+                                  <input value="{{ t2u.deadline }}" type="date" name="deadlineName" min="2019-12-01" max="4000-12-30" class="form-control" id="inputDeadline4" required>
+                                  <div class="valid-feedback">Valid.</div>
+                                  <div class="invalid-feedback">Please fill out this field.</div>
+                                </div>
+                              </div>                   
+                     
+                              <input type="hidden" name="optHidden" value="add">
+                      
+                          <button type="submit" class="btn w-50 btn-primary">Update</button>
+                      </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal" disabled>Close</button>
+                    </div>
+
+                  </div>
+              </div>
+          </div>
+        </div>
+        <br><br><br>
+    </div> <!-- /container -->
+   
+</main>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+        $('#updateTaskModal1').modal('show');
+      });
+    </script>
+
+    <br><br><br>
+    <br><br><br>
+</body>
+</html>

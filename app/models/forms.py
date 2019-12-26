@@ -5,6 +5,7 @@ from wtforms.validators import DataRequired
 
 
 class LoginForm(FlaskForm):
+    """ Flash Form for user login  """
     username = StringField(
         'username', 
         validators=[DataRequired()]
@@ -17,6 +18,7 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
+    """ Flash Form for user registration """
     name = StringField(
         'name',
         validators=[DataRequired()]
@@ -43,7 +45,8 @@ class RegisterForm(FlaskForm):
 
 
 class TaskForm(FlaskForm):
-    
+    """ Flash Form for tasks """
+
     taskname = StringField(
         'taskname', 
         validators=[DataRequired()]
