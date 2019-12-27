@@ -122,7 +122,52 @@ def task_insert():
     return redirect(url_for('task_doing'))
 
 
-@app.route('/task_pre_update/<int:task_id>', methods=['GET', 'POST'])
+@app.route('/task_doing', methods=['GET', 'POST'])
+@login_required
+def task_doing():
+
+    task_form = TaskForm()   
+
+    tasks = Task.query.all()
+    return render_template(
+        'task_doing.html', 
+        tasks=tasks, 
+        task_form=task_form
+    )
+
+
+@app.route('/task_done', methods=['GET', 'POST'])
+@login_required
+def task_done():
+    
+    task_form = TaskForm()
+    tasks = Task.query.all()
+
+    if request.method == "POST":
+        
+        if request.form['optHidden'] == 'done':
+            task_done = Task.query.get(
+                request.form['optDoneId']
+            )
+            task_done.done_status = True
+            db.session.add(task_done)
+            db.session.commit()
+
+            flash('Task done successfuly', 'success')
+            return render_template(
+                'task_done.html', 
+                tasks=tasks, 
+                task_form=task_form
+            )
+    return render_template(
+        'task_done.html', 
+        tasks=tasks, 
+        task_form=task_form
+    )
+
+
+@app.route('/task_pre_update/<int:task_id>', 
+    methods=['GET', 'POST'])
 @login_required
 def task_pre_update(task_id):
        
@@ -135,7 +180,8 @@ def task_pre_update(task_id):
     )
 
 
-@app.route('/task_update/<int:task_id>', methods=['GET', 'POST'])
+@app.route('/task_update/<int:task_id>', 
+    methods=['GET', 'POST'])
 @login_required
 def task_update(task_id):
     task_form = TaskForm()   
@@ -197,50 +243,6 @@ def task_delete():
   
     return render_template(
         'task_doing.html', 
-        tasks=tasks, 
-        task_form=task_form
-    )
-
-
-@app.route('/task_doing', methods=['GET', 'POST'])
-@login_required
-def task_doing():
-
-    task_form = TaskForm()   
-
-    tasks = Task.query.all()
-    return render_template(
-        'task_doing.html', 
-        tasks=tasks, 
-        task_form=task_form
-    )
-
-
-@app.route('/task_done', methods=['GET', 'POST'])
-@login_required
-def task_done():
-    
-    task_form = TaskForm()
-    tasks = Task.query.all()
-
-    if request.method == "POST":
-        
-        if request.form['optHidden'] == 'done':
-            task_done = Task.query.get(
-                request.form['optDoneId']
-            )
-            task_done.done_status = True
-            db.session.add(task_done)
-            db.session.commit()
-
-            flash('Task done successfuly', 'success')
-            return render_template(
-                'task_done.html', 
-                tasks=tasks, 
-                task_form=task_form
-            )
-    return render_template(
-        'task_done.html', 
         tasks=tasks, 
         task_form=task_form
     )
