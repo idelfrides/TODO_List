@@ -24,7 +24,7 @@
           <div class="row  w-100">
             <div class="col-md-4 col-lg-4 shadow-lg p-3 my-3 mr-3 ml-auto border rounded">
               <h2 class="text-dark">Cadastro</h2>
-              <p>Lorem Ipsum is simply dummy text
+              <p> Lorem Ipsum is simply dummy text
                   of the printing and typesetting 
                   industry. Lorem Ipsum has been the
                   industry's standard dummy text ever
@@ -33,7 +33,8 @@
                   scrambled it to make a type specimen
                   book.
               </p>
-              <p><a class="btn btn-primary" href="{{ url_for('register') }}" role="button">Resgister &raquo;</a></p>
+              <!--<p><a class="btn btn-primary" title="test onclick" onclick="go2register()" role="button">Resgister &raquo;</a></p> -->
+              <button class="btn btn-primary" onclick="go2register()" title="Go to Register page">Resgister  &raquo;</button>
             </div>
             <div class="col-md-4 col-lg-4 shadow p-3 my-3 ml-3 mr-auto  border rounded">
               <h2 class="text-dark">Login</h2>
@@ -45,10 +46,10 @@
                 printer took a galley of type and
                 scrambled it to make a type specimen
                 book.
-            </p>
-              <p><a class="btn btn-primary" href="{{ url_for('login') }}" role="button">Enter &raquo;</a></p>
+              </p>
+              <button class="btn btn-primary" onclick="go2login()" title="Go to login page">Enter &raquo;</button>
             </div>
-          </div>      
+          </div>
         </div> <!-- /container -->
     </main>
   
