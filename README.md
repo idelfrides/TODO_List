@@ -53,9 +53,9 @@ If everything in previous steps completed successfuly, now you are able to run t
 
 ### STEP 6: Create database
 
-Create a database with following commands one by one.
+Update database with following commands one by one.
 
-      python todo_list_run.py db init 
+      python todo_list_run.py db init  [to create, do not execute this]
       
       python todo_list_run.py db migrate
           
