@@ -52,7 +52,7 @@ If everything in previous steps complete successfuly, now you are able to run th
 
 ### STEP 6: Create a user
 
-Creat your user to login into app and test it.  Copy the localhost and paste it on your url of browser, so you are free to test all component you see on your page. Do not forget, that, to log in and create some tasks you gonna need to create your own user acount on page **Cadastro/Register**. 
+Creat your user to login into app and test it.  Copy the localhost and paste it on your url of browser, so you are free to test all components you see on your page. Do not forget, that, to log in and create some tasks you gonna need to create your own user acount on page **Cadastro/Register**. 
 
     http://127.0.0.1:5000/
      
