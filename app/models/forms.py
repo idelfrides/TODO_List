@@ -17,7 +17,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('remember')
 
 
-class RegisterForm(FlaskForm):
+class UserRegisterForm(FlaskForm):
     """ Flash Form for user registration """
     name = StringField(
         'name',
@@ -25,7 +25,7 @@ class RegisterForm(FlaskForm):
     )
     email = StringField(
         'emial',
-        [validators.InputRequired,  
+        [validators.InputRequired(),  
         validators.Length(min=6, max=120),
         validators.Email()] 
     )

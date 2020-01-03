@@ -18,7 +18,7 @@
     <link href="{{ url_for('static', filename='css/mystyle.css') }}" 
         rel="stylesheet" >
     
-    <script src="{{ url_for('static', filename='js/mystyle.js') }}" type="text/javascript"></script> 
+    <script src="{{ url_for('static', filename='js/todolist_functions.js') }}"></script> 
     
     
     <meta name="theme-color" content="#563d7c">
@@ -47,11 +47,9 @@
         <a class="navbar-brand w-75 mx-auto text-decoration-none text-white font-weight-bolder " href="#">TODO List</a>
           {% if current_user.is_authenticated %}
             <p class="text-white">{{ current_user.username }} &nbsp;&nbsp;| &nbsp;&nbsp;
-              <a href="{{ url_for('logout') }}">
-                <button class="btn btn-outline-light px-3 mr-5 my-2 my-sm-0">
-                  Logout
-                </button>
-              </a>  
+              <button class="btn btn-outline-light px-3 mr-5 my-2 my-sm-0" onclick="go2logout()">
+                Logout
+              </button> 
             </p>
           {% endif %}
       </div>
@@ -80,7 +78,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='js/mystyle.js') }}" type="text/javascript"></script> 
+    <script src="{{ url_for('static', filename='js/todolist_functions.js') }}"></script> 
     
     <br><br><br>
     <br><br><br>

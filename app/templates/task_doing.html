@@ -17,7 +17,7 @@
         <div class="shadow-lg w-25 row border border-secondary py-5 mb-auto ml-0 bg-white rounded">
             <div class="list-group rounded mx-auto my-auto">
                 <a id="active_doing" class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-4 rounded" href="{{ url_for('task_doing') }}">tarefas em execução</a>  
-                <a class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded"  href="{{ url_for('task_done') }}">tarefas concluídas</a>
+                <a class="shadow-lg border list-group-item list-group-item-action text-dark font-weight-bolder text-uppercase p-3 mb-3 rounded" href="{{ url_for('task_done') }}">tarefas concluídas</a>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
                             <p class="d-inline">Deadline: &nbsp; {{ t.deadline }}
                               <form method="POST" action="{{ url_for('task_done') }}" class="d-inline ml-5" >
                                 <input type="hidden" name="optHidden" value="done">
-                                <input type="hidden" name="optDoneId" value="{{ t.id }}">                                 
+                                <input type="hidden" name="optDoneId" value="{{ t.id }}">
                                 <button type="submit" class="btn btn-dark">Done</button>
                               </form> 
 

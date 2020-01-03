@@ -1,12 +1,13 @@
 from flask import flash, render_template
 from flask import redirect, request, url_for
 from app import app, db, login_manager
-from app.models.forms import LoginForm, RegisterForm
+from app.models.forms import LoginForm, UserRegisterForm
 from app.models.forms import TaskForm
 from app.models.tables import User, Task
 from app.controllers.manager import Manager
 from flask_login import login_user, logout_user 
 from flask_login import login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @login_manager.user_loader
@@ -30,30 +31,47 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
+    form = UserRegisterForm()
 
     if request.method == 'POST':
+        if form.validate_on_submit(): 
 
-        if form.validate_on_submit():
+            exists_user = User.query.all()
+
+            for usr in exists_user[::-1]:
+                if usr.username == form.username.data:
+                    flash("Username already exists", 'warning')
+                    return render_template(
+                        'register.html', 
+                        myform=form
+                    )
+                
+                if usr.email == form.email.data:
+                    flash("User email already exists", 'warning')
+                    return render_template(
+                        'register.html', 
+                        myform=form
+                    )
+            
             if not (form.password.data == form.confirm_pwd.data):
-                flash('Passwords do not match')
+                flash('Passwords do not match', 'danger')
                 return render_template(
                     'register.html', 
                     myform=form
-                )        
+                )
+            
             new_user = User(
                 username=form.username.data,
-                password=form.password.data,
+                password=generate_password_hash(form.password.data),
                 name=form.name.data,
                 email=form.email.data
             )
             db.session.add(new_user)
             db.session.commit()
-            flash('User created successfuly')
-
+            flash('User created successfuly', 'success')
             return redirect(url_for('login'))
         if not form.validate_on_submit():
-            print(form.errors)
+            flash('Passwords do not match', 'danger')
             return render_template(
                 'register.html', 
                 myform=form
@@ -63,8 +81,8 @@ def register():
             'register.html', 
             myform=form
         )
-        
-   
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -76,11 +94,11 @@ def login():
             flash(u'Invalid Login. Wrong username', 'danger') 
             return redirect('login')
 
-        if user.password != form.password.data:
+        if not  check_password_hash(user.password, form.password.data):
             flash(u'Invalid Login. Wrong password.', 'danger') 
             return redirect(url_for('login'))
        
-        if user.password == form.password.data:
+        if check_password_hash(user.password, form.password.data):
             login_user(user)
             flash(u'Logged in.', 'success')
             return redirect(url_for('task_doing'))
@@ -96,7 +114,7 @@ def login():
 
 @app.route('/task_insert', methods=['GET', 'POST'])
 @login_required
-def task_insert(): 
+def task_insert():
     
     all_task = Task.query.all()
 
