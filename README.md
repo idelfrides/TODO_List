@@ -59,7 +59,6 @@ Creat your user to login into app and test it.  Copy the localhost and paste it 
 Go ahead and enjoy.
  
 
-    
 
 
 

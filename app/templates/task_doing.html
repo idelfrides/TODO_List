@@ -29,7 +29,7 @@
                 </button>
             </div>
             <div id="all-task" class=" row col col-sm-8 col-md-8 col-lg-8 col-xl-8 text-white text-capitalize ml-2">
-                <h2 class="display-7 text-white text-capitalize font-weight-bolder mb-3 p-3">Tarefas em execução</h2> 
+                <h2 class="display-7 text-white text-capitalize font-weight-bolder mb-3 p-3">Tarefas em execução</h2><p class="my-auto p-2 btn-danger shadow-lg text-white font-weight-bolder">{{amount}}</p> 
                 {% for t in tasks[::-1] %}
                     {% if t.done_status == False and t.deadline != None %}
                         <div class="ml-4 text-white text-capitalize w-100 border-bottom mb-4">

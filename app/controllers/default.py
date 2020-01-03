@@ -118,10 +118,15 @@ def task_insert():
     
     all_task = Task.query.all()
 
+    '''
+    Do not necessary because tasks are shown 
+    according to the user.
+    
     for t in all_task:
         if t.task_name == request.form['taskTitleName']:
             flash(u'This task name already exists!','warning')
             return redirect(url_for('task_doing'))
+    '''
 
     date_add = Manager().numeric_date_recover()
     new_task = Task(
@@ -140,17 +145,26 @@ def task_insert():
     return redirect(url_for('task_doing'))
 
 
+# ---------------------------------------
+#     TASK: CRUD AND OTHERS METHODS
+#----------------------------------------
 @app.route('/task_doing', methods=['GET', 'POST'])
 @login_required
 def task_doing():
 
     task_form = TaskForm()   
 
-    tasks = Task.query.all()
+    tasks = Task.query.filter_by(user_id=current_user.id)
+    task_doing_amount = 0
+    for t in tasks:
+        if t.done_status == False:
+            task_doing_amount += 1 
+
     return render_template(
         'task_doing.html', 
         tasks=tasks, 
-        task_form=task_form
+        task_form=task_form,
+        amount=task_doing_amount
     )
 
 
@@ -159,7 +173,7 @@ def task_doing():
 def task_done():
     
     task_form = TaskForm()
-    tasks = Task.query.all()
+    tasks = Task.query.filter_by(user_id=current_user.id)
 
     if request.method == "POST":
         
@@ -177,10 +191,17 @@ def task_done():
                 tasks=tasks, 
                 task_form=task_form
             )
+   
+    task_done_amount = 0
+    for t in tasks:
+        if t.done_status == True:
+            task_done_amount += 1 
+
     return render_template(
         'task_done.html', 
         tasks=tasks, 
-        task_form=task_form
+        task_form=task_form,
+        amount=task_done_amount
     )
 
 
@@ -266,11 +287,11 @@ def task_delete():
     )
 
 
+# ---------------------------------------
+#     USER: LOGOUT METHOD
+#----------------------------------------
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-
