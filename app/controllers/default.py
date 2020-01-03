@@ -7,7 +7,8 @@ from app.models.tables import User, Task
 from app.controllers.manager import Manager
 from flask_login import login_user, logout_user 
 from flask_login import login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import (generate_password_hash, 
+                               check_password_hash)
 
 
 @login_manager.user_loader
