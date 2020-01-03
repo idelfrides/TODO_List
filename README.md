@@ -16,41 +16,54 @@ On your laptop or desktop clone this repository with command
      git clone https://github.com/idelfrides/TODO_List.git 
 
 
-Then, open your shell/terminal and go to the project folder **TODO_List**  with **cd** shell commend.
+Then, open your shell/terminal and go to the project folder **TODO_List**  with **cd** shell command.
 
 ### STEP 2: Creating a virtualenv 
 
-In project root create a virtualenv for your project like bellow.
+In project root create a virtual environment for your project, like bellow.
 
      virtualenv -p python3.7 ENV 
 
 
-### STEP 3: Ativate the virtualenv 
+### STEP 3: Activate the virtualenv 
 
-To active virtualenv created  type command  like bellow.
+To active the virtualenv created  type command  like bellow.
 
      source ENV/bin/activate
      
-If you are using **FISH** - Friendly Interative Shell, type this one.
+If you are using **FISH** - Friendly Interactive Shell, type this one.
 
      source ENV/bin/activate.fish
      
 
 ### STEP 4: Install all flask dependency
 
-To run app you need to install apckages used in this project. To do that execute the follwing  command.
+To run app, you need to install apckages used in this project. To do that execute the following  command.
 
      pip install -r ./requirement.text
 
 
 ### STEP 5: Run the app
 
-If everything in previous steps complete successfuly, now you are able to run this app. Execute  the follwing  command to do that.
+If everything in previous steps completed successfuly, now you are able to run this app. Execute  the following  command to do that.
 
      python todo_list_run.py runserver
      
 
-### STEP 6: Create a user
+
+### STEP 6: Create database
+
+Create a database with following commands one by one.
+
+      python todo_list_run.py db init 
+      
+      python todo_list_run.py db migrate
+          
+      python todo_list_run.py db upgrade
+          
+          
+          
+### STEP 7: Create a user
 
 Creat your user to login into app and test it.  Copy the localhost and paste it on your url of browser, so you are free to test all components you see on your page. Do not forget, that, to log in and create some tasks you gonna need to create your own user acount on page **Cadastro/Register**. 
 
