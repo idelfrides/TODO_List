@@ -116,12 +116,14 @@ def login():
 @login_required
 def task_insert():
     
-    all_task = Task.query.all()
+    # all_task = Task.query.all()
 
     '''
-    Do not necessary because tasks are shown 
-    according to the user.
-    
+    This verification do not necessary because tasks are shown 
+    according to the user. 
+    One user will not see task created by other user
+    ----------------
+
     for t in all_task:
         if t.task_name == request.form['taskTitleName']:
             flash(u'This task name already exists!','warning')
