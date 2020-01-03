@@ -1,8 +1,6 @@
 
 function go2register() {
     window.location.href = "http://127.0.0.1:5000/register";
-
-    /* window.location.replace("http://127.0.0.1:5000/register"); */
 }
 
 function go2login() {
