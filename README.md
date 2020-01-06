@@ -65,7 +65,7 @@ Update database with following commands one by one.
           
 ### STEP 7: Create a user
 
-Creat your user to login into app and test it.  Copy the localhost and paste it on your url of browser, so you are free to test all components you see on your page. Do not forget, that, to log in and create some tasks you gonna need to create your own user acount on page **Cadastro/Register**. 
+Creat your user to login into app and test it.  Copy the localhost and paste it on your url of browser, so you are free to test all components you see on your page. Do not forget, to log in and create some tasks you gonna need to create your own user acount on page **Cadastro/Register**. 
 
     http://127.0.0.1:5000/
      
