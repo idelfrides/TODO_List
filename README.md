@@ -38,7 +38,7 @@ If you are using **FISH** - Friendly Interactive Shell, type this one.
 
 ### STEP 4: Install all flask dependency
 
-To run app, you need to install apckages used in this project. To do that execute the following  command.
+To run app, you need to install packages used in this project. To do that, execute the following  command.
 
      pip install -r ./requirement.text
 
